@@ -6,4 +6,4 @@
 venv/
 .pytest_cache/
 **__pycache__/
-db.sqligte3
+*.sqligte3
