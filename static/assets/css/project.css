@@ -1,0 +1,49 @@
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: flex;
+}
+
+.column {
+    flex: 1;
+    background-color: #3f4d67;
+/ border-radius: 10 px;
+    margin-right: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.column:last-child {
+    margin-right: 0;
+}
+
+.column-header {
+    background-color: rgba(0, 0, 0, 0.2); /* Цвет заголовков колонок */
+    color: #c7c7c7;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.card {
+    background-color: #ffffff; /* Белый фон для карточек */
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.card-text {
+    margin-bottom: 3px;
+    color: #c7c7c7;
+}

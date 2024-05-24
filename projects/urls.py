@@ -1,11 +1,10 @@
 from django.urls import include, path
 
 from config.views import index
-from projects.views import index_view
+from projects.views import ProjectDetailView
 
 app_name = 'projects'
 
 urlpatterns = [
-    path('',index_view, name='index'),
-
+    path('<int:pk>/', ProjectDetailView.as_view(), name='project_detail'),
 ]
