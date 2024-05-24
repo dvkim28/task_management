@@ -10,9 +10,12 @@
         <div class="card-header">
           <h5>{{ project.name }} project</h5>
         </div>
-      {% for member in project.crew.all %}
-        {{ member.username }}
-      {% endfor %}
+<div class="crew-members">
+  {% for member in project.crew.all %}
+    <span>{{ member.username }}</span>
+  {% endfor %}
+</div>
+
         <div class="card-block">
             <div class="container">
     <div class="column">

@@ -17,13 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from config.views import index
+from config.views import IndexView
 
 app_name = 'main'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index'),
+    path('', IndexView.as_view(), name='index'),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('projects/', include('projects.urls')),

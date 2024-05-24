@@ -1,6 +1,12 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-@login_required
-def index(request):
-    return render(request, "pages/index.html")
+from projects.models import Project
+
+
+class IndexView(TemplateView):
+    template_name = 'pages/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['projects'] = Project.objects.filter(crew=self.request.user)
+        return context

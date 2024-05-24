@@ -1,6 +1,5 @@
-from django.urls import include, path
+from django.urls import path
 
-from config.views import index
 from projects.views import ProjectDetailView
 
 app_name = 'projects'

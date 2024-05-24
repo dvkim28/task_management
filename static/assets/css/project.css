@@ -47,3 +47,10 @@
     margin-bottom: 3px;
     color: #c7c7c7;
 }
+.crew-members {
+  display: flex;
+}
+
+.crew-members span {
+  margin-right: 10px; /* Опционально: добавляет небольшое расстояние между участниками */
+}

@@ -28,11 +28,14 @@
         <li class="nav-item pcoded-menu-caption">
           <label>My projects</label>
         </li>
-        <li data-username="Table bootstrap datatable footable"
-            class="nav-item ">
-          <a href="" class="nav-link "><span class="pcoded-micon"><i
-              class="feather icon-server"></i></span><span class="pcoded-mtext">Table</span></a>
+        {% for project in projects.all %}
+        <li data-username="form elements advance componant validation masking wizard picker select"
+            class="nav-item">
+          <a href="{% url "projects:project_detail" project.id %}" class="nav-link "><span class="pcoded-micon"><i
+              class="feather icon-briefcase"></i></span><span class="pcoded-mtext">{{ project.name }}</span></a>
         </li>
+        {% endfor %}
+
         <li class="nav-item pcoded-menu-caption">
           <label>Chart & Maps</label>
         </li>

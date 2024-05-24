@@ -31,6 +31,7 @@ class UserUpdateProfileView(LoginRequiredMixin,UpdateView):
     form_class = UserProfileForm
     template_name = "pages/profile.html"
     context_object_name = "user"
+    a=1
 
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
