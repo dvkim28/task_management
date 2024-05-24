@@ -1,4 +1,6 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import request
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
@@ -24,8 +26,18 @@ class UserRegistrationView(CreateView):
         return response
 
 
-class UserUpdateProfileView(UpdateView):
+class UserUpdateProfileView(LoginRequiredMixin,UpdateView):
     model = User
     form_class = UserProfileForm
     template_name = "pages/profile.html"
     context_object_name = "user"
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "accounts:user-profile-view", kwargs={
+                "pk": self.object.pk
+            }
+        )
