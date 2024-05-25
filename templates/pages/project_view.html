@@ -4,83 +4,87 @@
   <link rel="stylesheet" href="{% static 'assets/css/project.css' %}">
 {% endblock extrastyle %}
 {% block content %}
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card">
-        <div class="card-header">
-          <h5>{{ project.name }} project</h5>
-        </div>
-<div class="crew-members">
-  {% for member in project.crew.all %}
-    <span>{{ member.username }}</span>
-  {% endfor %}
-</div>
+  {% if request.user in project.crew.all %}
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>{{ project.name }} project</h5>
+          </div>
+          <div class="crew-members">
+            {% for member in project.crew.all %}
+              <span>{{ member.username }}</span>
+            {% endfor %}
+          </div>
 
-        <div class="card-block">
+          <div class="card-block">
             <div class="container">
-    <div class="column">
-      <div class="column-header">To Do</div>
-      {% for task in project.task_set.all %}
-        {% if task.statuses == "To do" %}
-          <div class="card">
-            <div class="card-title">{{ task.name }}</div>
-            <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-            <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-            <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-            <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="column">
-      <div class="column-header">In Progress</div>
-      {% for task in project.task_set.all %}
-        {% if task.statuses == "In progress" %}
-          <div class="card">
-            <div class="card-title">{{ task.name }}</div>
-            <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-            <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-            <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-            <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="column">
-      <div class="column-header">In testing</div>
-      {% for task in project.task_set.all %}
-        {% if task.statuses == "In testing" %}
-          <div class="card">
-            <div class="card-title">{{ task.name }}</div>
-            <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-            <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-            <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-            <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="column">
-      <div class="column-header">Done</div>
-      {% for task in project.task_set.all %}
-        {% if task.statuses == "Done" %}
-          <div class="card">
-            <div class="card-title">{{ task.name }}</div>
-            <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-            <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-            <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-            <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    </div>
+              <div class="column">
+                <div class="column-header">To Do</div>
+                {% for task in project.task_set.all %}
+                  {% if task.statuses == "To do" %}
+                    <div class="card">
+                      <div class="card-title">{{ task.name }}</div>
+                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="column">
+                <div class="column-header">In Progress</div>
+                {% for task in project.task_set.all %}
+                  {% if task.statuses == "In progress" %}
+                    <div class="card">
+                      <div class="card-title">{{ task.name }}</div>
+                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="column">
+                <div class="column-header">In testing</div>
+                {% for task in project.task_set.all %}
+                  {% if task.statuses == "In testing" %}
+                    <div class="card">
+                      <div class="card-title">{{ task.name }}</div>
+                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="column">
+                <div class="column-header">Done</div>
+                {% for task in project.task_set.all %}
+                  {% if task.statuses == "Done" %}
+                    <div class="card">
+                      <div class="card-title">{{ task.name }}</div>
+                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
 
 
-  </div>
+            </div>
 
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  {% else %}
+    <h4>Your are not participant of this project. To see tasks you need be a member of the project!</h4>
+  {% endif %}
 
 {% endblock content %}
