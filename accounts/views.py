@@ -26,12 +26,11 @@ class UserRegistrationView(CreateView):
         return response
 
 
-class UserUpdateProfileView(LoginRequiredMixin,UpdateView):
+class UserUpdateProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
     template_name = "pages/profile.html"
     context_object_name = "user"
-    a=1
 
     def get_queryset(self):
         return User.objects.filter(id=self.request.user.id)
