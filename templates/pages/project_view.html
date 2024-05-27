@@ -10,8 +10,10 @@
         <div class="card">
           <div class="card-header">
             <h5>{{ project.name }} project</h5>
-            <a href="{% url "projects:task_create" %}"><button type="button" class="btn btn-outline-success"> New task</button></a>
-            
+            <a href="{% url "projects:task_create" %}">
+              <button type="button" class="btn btn-outline-success"> New task</button>
+            </a>
+
           </div>
           <div class="crew-members">
             {% for member in project.crew.all %}
@@ -26,15 +28,15 @@
                 {% for task in project.task_set.all %}
                   {% if task.status == "To do" %}
                     <div class="card">
-                                        <a href="{% url "projects:task_detail" task.id %}">
+                      <a href="{% url "projects:task_detail" task.id %}">
 
-                      <div class="card-title">{{ task.title }}</div>
-                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                        <div class="card-title">{{ task.title }}</div>
+                        <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                        <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                        <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                        <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      </a>
                     </div>
-                    </a>
                   {% endif %}
                 {% endfor %}
               </div>
@@ -43,11 +45,14 @@
                 {% for task in project.task_set.all %}
                   {% if task.status == "In progress" %}
                     <div class="card">
-                      <div class="card-title">{{ task.name }}</div>
-                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      <a href="{% url "projects:task_detail" task.id %}">
+
+                        <div class="card-title">{{ task.title }}</div>
+                        <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                        <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                        <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                        <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      </a>
                     </div>
                   {% endif %}
                 {% endfor %}
@@ -57,11 +62,14 @@
                 {% for task in project.task_set.all %}
                   {% if task.status == "In testing" %}
                     <div class="card">
-                      <div class="card-title">{{ task.name }}</div>
-                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      <a href="{% url "projects:task_detail" task.id %}">
+
+                        <div class="card-title">{{ task.title }}</div>
+                        <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                        <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                        <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                        <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      </a>
                     </div>
                   {% endif %}
                 {% endfor %}
@@ -71,11 +79,14 @@
                 {% for task in project.task_set.all %}
                   {% if task.status == "Done" %}
                     <div class="card">
-                      <div class="card-title">{{ task.title }}</div>
-                      <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
-                      <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
-                      <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
-                      <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      <a href="{% url "projects:task_detail" task.id %}">
+
+                        <div class="card-title">{{ task.title }}</div>
+                        <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
+                        <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
+                        <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
+                        <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
+                      </a>
                     </div>
                   {% endif %}
                 {% endfor %}

@@ -1,9 +1,13 @@
 from django import forms
+from django.contrib.auth import get_user_model
+from django.forms import DateInput
 
 from projects.models import Task, Comment
 
 
 class CreateTaskForm(forms.ModelForm):
+    deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+
     class Meta:
         model = Task
         fields = ['title',
@@ -39,3 +43,10 @@ class CommentForm(forms.ModelForm):
             comment.author = creator
         if commit:
             comment.save()
+
+
+class TaskGeneralForm(forms.ModelForm):
+    deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+    class Meta:
+        model = Task
+        fields = ['priority', 'assigned_to', 'deadline', 'status',]

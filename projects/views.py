@@ -66,11 +66,9 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "task"
 
     def get_context_data(self, **kwargs):
-        context = super(TaskDetailView, self).get_context_data()
-        context["CommentForm"] = CommentForm
-        context["TaskGeneralForm"] = TaskGeneralForm
-        context["dedline"] = TaskGeneralForm
-
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+        context["CommentForm"] = CommentForm()
+        context["TaskGeneralForm"] = TaskGeneralForm(instance=self.object)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -78,28 +76,28 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
         self.object = self.get_object()
         author = request.user
         project = Project.objects.get(pk=self.object.projects.pk)
+
         if form.is_valid():
             form.instance.projects = project
             form.instance.author = author
-            form.instance.task = self.object  # Ensure task is assigned
+            form.instance.task = self.object
             form.save()
             task_pk = form.instance.task.pk
             return HttpResponseRedirect(
-                reverse_lazy("projects:task_detail",
-                             kwargs={"pk": task_pk}))
+                reverse_lazy("projects:task_detail", kwargs={"pk": task_pk})
+            )
         else:
-            data = form.cleaned_data
-            deadline = data.get("deadline")
-            deadline_date = datetime.strptime(deadline, '%b. %d, %Y').strftime('%Y-%m-%d')
-            task_pk = self.object.pk
-            context = self.get_context_data(**kwargs)
-            context['TaskGeneralForm'] = form
-            task = self.object
-            task.priority = data.get("priority")
-            task.assigned_to = data.get("assigned_to")
-            task.deadline = deadline_date
-            task.status = data.get("status")
-            task.save()
+            form = TaskGeneralForm(request.POST)
+            if form.is_valid():
+                data = form.cleaned_data
+                deadline = data.get("deadline")
+                task_pk = self.object.pk
+                task = self.object
+                task.priority = data.get("priority")
+                task.assigned_to = data.get("assigned_to")
+                task.deadline = deadline
+                task.status = data.get("status")
+                task.save()
             return HttpResponseRedirect(
-                reverse_lazy("projects:task_detail",
-                             kwargs={"pk": task_pk}))
+                reverse_lazy("projects:task_detail", kwargs={"pk": task_pk})
+            )

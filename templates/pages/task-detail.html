@@ -1,53 +1,60 @@
 {% extends 'layouts/base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% block extrastyle %}
   <link rel="stylesheet" href="{% static 'assets/css/project.css' %}">
 {% endblock extrastyle %}
 {% block content %}
-
- <div id="task-detail-container" class="td-container">
+  <div id="task-detail-container" class="td-container">
     <div class="td-header">
-        <h1>{{ task.title }}</h1>
+      <h1>{{ task.title }}</h1>
     </div>
     <div class="td-content">
-        <div class="td-column td-left-column">
-            <div class="td-description">
-                <h2>Description</h2>
-                <p>{{ task.description }}</p>
-            </div>
-            <div class="td-comments">
-                <h2>Comments</h2>
-                {% for comment in task.comments.all %}
-                    <div class="td-comment">
-                        <p><strong>{{ comment.author }}</strong> on {{ comment.created_at|date:"Y-m-d H:i" }}</p>
-                        <p>{{ comment.text }}</p>
-                    </div>
-                {% endfor %}
-                <form class="td-comment-form" method="post" action="">
-                    {% csrf_token %}
-                  {{  CommentForm }}
-                    <button type="submit">Post Comment</button>
-                </form>
-            </div>
+      <div class="td-column td-left-column">
+        <div class="td-description">
+          <h2>Description</h2>
+          <p>{{ task.description }}</p>
         </div>
-        <div class="td-column td-right-column">
-            <div class="td-task-info">
-                <h2>Task Details</h2>
-                <p><strong>Assigned to:</strong> {{ task.assigned_to }}</p>
-                <p><strong>Status:</strong> {{ task.status }}</p>
-                <p><strong>Priority:</strong> {{ task.priority }}</p>
-                <p><strong>Created on:</strong> {{ task.created_at }}</p>
-                <p><strong>Due date:</strong> {{ task.deadline }}</p>
+        <div class="td-comments">
+          <h2>Comments</h2>
+          {% for comment in task.comments.all %}
+            <div class="td-comment">
+              <p><strong>{{ comment.author }}</strong> on {{ comment.created_at|date:"Y-m-d H:i" }}</p>
+              <p>{{ comment.text }}</p>
             </div>
+          {% endfor %}
+          <form class="td-comment-form" method="post" action="">
+            {% csrf_token %}
+            {{ CommentForm }}
+            <button type="submit">Post Comment</button>
+          </form>
         </div>
+      </div>
+      <div class="td-column td-right-column">
+        <div class="td-task-info">
+          <h2>Task Details</h2>
+          <form action="" method="post" novalidate>
+            {{ TaskGeneralForm|crispy }}
+            {% csrf_token %}
+            <p><strong>Created on:</strong> {{ task.created_at }}</p>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-info">Update</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
     </div>
-    <div class="td-footer">
+    {% if request.user == task.creator %}
+      <div class="td-footer">
         <button class="td-edit-btn">Edit Task</button>
         <button class="td-delete-btn">Delete Task</button>
-    </div>
-</div>
-
-
-
+      </div>
+    {% endif %}
+  </div>
 {% endblock content %}
+
+
 

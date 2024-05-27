@@ -26,7 +26,7 @@ class Task(models.Model):
                                 null=True,
                                 related_name='creator')
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     deadline = models.DateField()
     is_done = models.BooleanField(default=False)
     priorities = [
