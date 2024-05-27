@@ -25,7 +25,7 @@
                 {% endfor %}
                 <form class="td-comment-form" method="post" action="">
                     {% csrf_token %}
-                    <textarea name="content" placeholder="Add a comment..." required></textarea>
+                  {{  CommentForm }}
                     <button type="submit">Post Comment</button>
                 </form>
             </div>
