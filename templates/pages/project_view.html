@@ -10,7 +10,8 @@
         <div class="card">
           <div class="card-header">
             <h5>{{ project.name }} project</h5>
-<button type="button" class="btn btn-outline-success"> New task</button>
+            <a href="{% url "projects:task_create" %}"><button type="button" class="btn btn-outline-success"> New task</button></a>
+            
           </div>
           <div class="crew-members">
             {% for member in project.crew.all %}

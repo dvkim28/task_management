@@ -6,7 +6,7 @@
 .card-header{
     display: flex;
     justify-content: space-between;
-    width: 1400px;
+    width: 100%;
 
 }
 .column {
@@ -58,4 +58,83 @@
 
 .crew-members span {
   margin-right: 10px; /* Опционально: добавляет небольшое расстояние между участниками */
+}
+
+#task-detail-container {
+    font-family: Arial, sans-serif;
+    background-color: #3f4d67;
+    margin: 0 auto;
+    padding: 20px;
+    width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#task-detail-container .td-header {
+    border-bottom: 1px solid #dfe1e6;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#task-detail-container .td-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#task-detail-container .td-content {
+    display: flex;
+    gap: 20px;
+}
+
+#task-detail-container .td-column {
+    flex: 1;
+}
+
+#task-detail-container .td-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#task-detail-container .td-description,
+#task-detail-container .td-comments,
+#task-detail-container .td-task-info {
+    background-color: #313d50;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+#task-detail-container .td-description h2,
+#task-detail-container .td-comments h2,
+#task-detail-container .td-task-info h2 {
+    margin-top: 0;
+}
+
+#task-detail-container .td-comment {
+    margin-bottom: 10px;
+}
+
+#task-detail-container .td-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#task-detail-container .td-footer .td-edit-btn,
+#task-detail-container .td-footer .td-delete-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#task-detail-container .td-footer .td-edit-btn {
+    background-color: #0052cc;
+    color: #fff;
+}
+
+#task-detail-container .td-footer .td-delete-btn {
+    background-color: #ff5630;
+    color: #fff;
 }
