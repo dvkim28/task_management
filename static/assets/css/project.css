@@ -39,7 +39,7 @@
 }
 
 .card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 8px rgba(124, 124, 124, 0.24);
 }
 
 .card-title {
@@ -138,3 +138,48 @@
     background-color: #ff5630;
     color: #fff;
 }
+.card>a
+{
+    text-decoration: none;
+}
+.td-comments {
+        margin-top: 20px;
+    }
+    .td-comment {
+    background-color: #24354a;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    .td-comment strong {
+    color: #ffffff;
+    }
+    .td-comment p {
+        margin: 5px 0;
+    }
+    .td-comment-form {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    .td-comment-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        resize: vertical;
+    }
+    .td-comment-form button {
+        align-self: flex-end;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .td-comment-form button:hover {
+        background-color: #0056b3;
+    }
