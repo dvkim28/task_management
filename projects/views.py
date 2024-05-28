@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, request
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 
-from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm
+from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm, TaskQuickStatusChangeForm
 from projects.models import Project, Task
 
 
@@ -35,6 +35,10 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     template_name = "pages/project_view.html"
     context_object_name = "project"
 
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context["TaskQuickStatusChangeForm"] = TaskQuickStatusChangeForm
+        return context
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task

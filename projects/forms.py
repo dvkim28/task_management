@@ -6,17 +6,17 @@ from projects.models import Task, Comment
 
 
 class CreateTaskForm(forms.ModelForm):
-    deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+    deadline = forms.DateField(widget=DateInput(attrs={"type": "date"}))
 
     class Meta:
         model = Task
-        fields = ['title',
-                  'deadline',
-                  'priority',
-                  'description',
-                  'assigned_to',
-                  'task_type',
-                  'projects']
+        fields = ["title",
+                  "deadline",
+                  "priority",
+                  "description",
+                  "assigned_to",
+                  "task_type",
+                  "projects"]
 
     def save(self, commit=True, creator=None):
         task = super(CreateTaskForm, self).save(commit=False)
@@ -28,9 +28,9 @@ class CreateTaskForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     text = forms.CharField(widget=forms.Textarea(attrs={
-        'placeholder': 'Add a comment...',
+        "placeholder": "Add a comment...",
     }),
-        label=''
+        label=""
     )
 
     class Meta:
@@ -46,7 +46,26 @@ class CommentForm(forms.ModelForm):
 
 
 class TaskGeneralForm(forms.ModelForm):
-    deadline = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+    deadline = forms.DateField(widget=DateInput(attrs={"type": "date"}))
+
     class Meta:
         model = Task
-        fields = ['priority', 'assigned_to', 'deadline', 'status',]
+        fields = ["priority", "assigned_to", "deadline", "status", ]
+
+
+class TaskQuickStatusChangeForm(forms.ModelForm):
+    STATUS_CHOICES = [
+        ("To do", "To do"),
+        ("In progress", "In progress"),
+        ("In test", "In test"),
+        ("Done", "Done"),
+    ]
+    status = forms.ChoiceField(
+        choices=STATUS_CHOICES,
+        widget=forms.Select,
+        required=False
+    )
+
+    class Meta:
+        model = Task
+        fields = ["status"]

@@ -9,7 +9,7 @@ class UserProfileForm(forms.ModelForm):
         max_length=100,
         widget=forms.EmailInput(attrs={
             "class": "form-control",
-            'placeholder': 'Enter email'
+            "placeholder": "Enter email"
         }))
     first_name = forms.CharField(
         label="First Name",

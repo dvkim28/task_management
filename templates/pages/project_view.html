@@ -1,4 +1,6 @@
 {% extends 'layouts/base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_filters %}
 {% load static %}
 {% block extrastyle %}
   <link rel="stylesheet" href="{% static 'assets/css/project.css' %}">
@@ -46,13 +48,20 @@
                   {% if task.status == "In progress" %}
                     <div class="card">
                       <a href="{% url "projects:task_detail" task.id %}">
-
-                        <div class="card-title">{{ task.title }}</div>
+                        <div class="card-title">{{ task.title }}
+                        </div>
                         <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
                         <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
                         <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
                         <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
-                      </a>
+                      </a><br>
+                      <form action="" method="post" novalidate>
+                        {{ TaskQuickStatusChangeForm|crispy }}
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-end">
+                          <button type="submit" class="btn btn-info">Update</button>
+                        </div>
+                      </form>
                     </div>
                   {% endif %}
                 {% endfor %}
@@ -80,7 +89,6 @@
                   {% if task.status == "Done" %}
                     <div class="card">
                       <a href="{% url "projects:task_detail" task.id %}">
-
                         <div class="card-title">{{ task.title }}</div>
                         <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
                         <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
