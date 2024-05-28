@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, request
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 
@@ -64,7 +64,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
                              kwargs={"pk": project_pk}))
 
 
-class TaskDetailView(LoginRequiredMixin, DetailView):
+class TaskDetailView(LoginRequiredMixin,  DetailView):
     model = Task
     template_name = "pages/task-detail.html"
     context_object_name = "task"
