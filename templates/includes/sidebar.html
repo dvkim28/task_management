@@ -28,16 +28,16 @@
         <li class="nav-item pcoded-menu-caption">
           <label>My projects</label>
         </li>
-        {% for project in projects %}
-        <li data-username="form elements advance componant validation masking wizard picker select"
-            class="nav-item">
-          <a href="{% url "projects:project_detail" project.id %}" class="nav-link "><span class="pcoded-micon"><i
-              class="feather icon-briefcase"></i></span><span class="pcoded-mtext">{{ project.name }}</span></a>
-        </li>
+        {% for project in request.user.projects.all %}
+          <li data-username="form elements advance componant validation masking wizard picker select"
+              class="nav-item">
+            <a href="{% url "projects:project_detail" project.id %}" class="nav-link "><span class="pcoded-micon"><i
+                class="feather icon-briefcase"></i></span><span class="pcoded-mtext">{{ project.name }}</span></a>
+          </li>
         {% endfor %}
         <br>
         <br>
-              <li data-username="form elements advance componant validation masking wizard picker select"
+        <li data-username="form elements advance componant validation masking wizard picker select"
             class="nav-item">
           <a href="{% url "projects:project_create" %}" class="nav-link "><span class="pcoded-micon"><i
               class="feather icon-edit"></i></span><span class="pcoded-mtext"><b>Start new project</b></span></a>

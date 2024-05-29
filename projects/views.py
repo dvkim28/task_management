@@ -6,7 +6,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 
-from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm, TaskQuickStatusChangeForm, InviteNewMemberForm
+from accounts.models import User
+from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm, InviteNewMemberForm
 from projects.models import Project, Task
 
 
@@ -38,18 +39,18 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
-        context["TaskQuickStatusChangeForm"] = TaskQuickStatusChangeForm
         context["InviteNewMemberForm"] = InviteNewMemberForm
+        context["members"] = User.objects.filter(projects=self.object)
         return context
 
     def post(self, request, *args, **kwargs):
         form = InviteNewMemberForm(request.POST)
         if form.is_valid():
             project = self.get_object()
-            users = form.cleaned_data['crew']
+            users = form.cleaned_data['projects']
             for user in users:
-                project.crew.add(user)
-                project.save()
+                user_obj = User.objects.get(pk=user.pk)
+                user_obj.projects.add(project)
             return HttpResponseRedirect(
                 reverse_lazy("projects:project_detail", kwargs={"pk": project.pk})
             )

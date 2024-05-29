@@ -1,12 +1,11 @@
 from django.db import models
 
-from accounts.models import User
+from config.settings import AUTH_USER_MODEL
 
 
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
-    crew = models.ManyToManyField(User)
 
     def __str__(self):
         return self.name
@@ -21,7 +20,7 @@ class TaskType(models.Model):
 
 class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User,
+    creator = models.ForeignKey(AUTH_USER_MODEL,
                                 on_delete=models.SET_NULL,
                                 null=True,
                                 related_name='creator')
@@ -36,7 +35,7 @@ class Task(models.Model):
         ("Critical", 'Critical'),
     ]
     priority = models.CharField(choices=priorities, default="Low", max_length=100)
-    assigned_to = models.ForeignKey(User,
+    assigned_to = models.ForeignKey(AUTH_USER_MODEL,
                                     blank=True,
                                     null=True,
                                     on_delete=models.SET_NULL,
@@ -66,8 +65,9 @@ class Task(models.Model):
 
 class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
+
     def __str__(self):
         return f"Comment from {self.author} at {self.created_at}| project {self.task.projects}"

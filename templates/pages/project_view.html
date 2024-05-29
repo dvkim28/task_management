@@ -1,15 +1,13 @@
 {% extends 'layouts/base.html' %}
 {% load crispy_forms_filters %}
-{% load crispy_forms_filters %}
-{% load crispy_forms_filters %}
 {% load static %}
+
 {% block extrastyle %}
   <link rel="stylesheet" href="{% static 'assets/css/project.css' %}">
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 {% endblock extrastyle %}
+
 {% block content %}
-  {% if request.user in project.crew.all %}
+  {% if project in request.user.projects.all %}
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
@@ -20,8 +18,8 @@
             </a>
           </div>
           <div class="crew-members">
-           <span>Filter by: </span>
-            {% for member in project.crew.all %}
+            <span>Filter by: </span>
+            {% for member in members %}
               <span>{{ member.username }}</span>
             {% endfor %}
           </div>
@@ -39,7 +37,6 @@
                   {% if task.status == "To do" %}
                     <div class="card">
                       <a href="{% url "projects:task_detail" task.id %}">
-
                         <div class="card-title">{{ task.title }}</div>
                         <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
                         <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
@@ -56,18 +53,21 @@
                   {% if task.status == "In progress" %}
                     <div class="card">
                       <a href="{% url "projects:task_detail" task.id %}">
-                        <div class="card-title">{{ task.title }}
-                        </div>
+                        <div class="card-title">{{ task.title }}</div>
                         <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
                         <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
                         <div class="card-text"><strong>Assigned To: </strong>{{ task.assigned_to }}</div>
                         <div class="card-text"><strong>Task Type: </strong> {{ task.task_type }}</div>
-                      </a><br>
+                      </a>
+                      <br>
                       <form action="" method="post" novalidate>
-                        {% for option, value in TaskQuickStatusChangeForm.fields.statuses.choices %}
-                          <option value="{{ option }}"
-                                  {% if TaskQuickStatusChangeForm.instance.statuses == value %}selected{% endif %}>{{ value }}</option>
-                        {% endfor %}
+                        {% csrf_token %}
+                        <select name="status" class="form-control">
+                          {% for option, value in TaskQuickStatusChangeForm.fields.statuses.choices %}
+                            <option value="{{ option }}"
+                                    {% if TaskQuickStatusChangeForm.instance.statuses == option %}selected{% endif %}>{{ value }}</option>
+                          {% endfor %}
+                        </select>
                       </form>
                     </div>
                   {% endif %}
@@ -79,7 +79,6 @@
                   {% if task.status == "In testing" %}
                     <div class="card">
                       <a href="{% url "projects:task_detail" task.id %}">
-
                         <div class="card-title">{{ task.title }}</div>
                         <div class="card-text"><strong>Deadline:</strong> {{ task.deadline }}</div>
                         <div class="card-text"><strong>Priority:</strong> {{ task.priority }}</div>
@@ -106,16 +105,14 @@
                   {% endif %}
                 {% endfor %}
               </div>
-
-
             </div>
-
           </div>
         </div>
       </div>
     </div>
   {% else %}
-    <h4>Your are not participant of this project. To see tasks you need be a member of the project!</h4>
+    <h4>You are not a participant of this project. To see tasks you need to be a member of the project!</h4>
   {% endif %}
+
 
 {% endblock content %}

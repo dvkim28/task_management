@@ -1,9 +1,8 @@
 from django import forms
-from django.contrib.auth import get_user_model
 from django.forms import DateInput
 
 from accounts.models import User
-from projects.models import Task, Comment, Project
+from projects.models import Task, Comment
 
 
 class CreateTaskForm(forms.ModelForm):
@@ -53,31 +52,12 @@ class TaskGeneralForm(forms.ModelForm):
         model = Task
         fields = ["priority", "assigned_to", "deadline", "status", ]
 
-
-class TaskQuickStatusChangeForm(forms.ModelForm):
-    STATUS_CHOICES = [
-        ("To do", "To do"),
-        ("In progress", "In progress"),
-        ("In test", "In test"),
-        ("Done", "Done"),
-    ]
-    status = forms.ChoiceField(
-        choices=STATUS_CHOICES,
-        widget=forms.Select,
-        required=False
-    )
-
-    class Meta:
-        model = Task
-        fields = ["status"]
-
-
 class InviteNewMemberForm(forms.ModelForm):
-    crew = forms.ModelMultipleChoiceField(
+    projects = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
-        label=""
+        label="",
     )
 
     class Meta:
-        model = Project
-        fields = ["crew"]
+        model = User
+        fields = ["projects"]
