@@ -2,10 +2,11 @@ from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 
-from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm, TaskQuickStatusChangeForm
+from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm, TaskQuickStatusChangeForm, InviteNewMemberForm
 from projects.models import Project, Task
 
 
@@ -38,7 +39,22 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context["TaskQuickStatusChangeForm"] = TaskQuickStatusChangeForm
+        context["InviteNewMemberForm"] = InviteNewMemberForm
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = InviteNewMemberForm(request.POST)
+        if form.is_valid():
+            project = self.get_object()
+            users = form.cleaned_data['crew']
+            for user in users:
+                project.crew.add(user)
+                project.save()
+            return HttpResponseRedirect(
+                reverse_lazy("projects:project_detail", kwargs={"pk": project.pk})
+            )
+        return self.get(request, *args, **kwargs)
+
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
@@ -64,7 +80,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
                              kwargs={"pk": project_pk}))
 
 
-class TaskDetailView(LoginRequiredMixin,  DetailView):
+class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
     template_name = "pages/task-detail.html"
     context_object_name = "task"

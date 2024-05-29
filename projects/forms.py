@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import DateInput
 
-from projects.models import Task, Comment
+from accounts.models import User
+from projects.models import Task, Comment, Project
 
 
 class CreateTaskForm(forms.ModelForm):
@@ -69,3 +70,14 @@ class TaskQuickStatusChangeForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ["status"]
+
+
+class InviteNewMemberForm(forms.ModelForm):
+    crew = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        label=""
+    )
+
+    class Meta:
+        model = Project
+        fields = ["crew"]

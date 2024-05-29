@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     "accounts",
     "projects",
+    "django_select2",
 
 ]
 
