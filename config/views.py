@@ -53,6 +53,6 @@ class IndexView(LoginRequiredMixin, TemplateView):
         projects = list(self.request.user.projects.all())
         all_logs = []
         for project in projects:
-            logs = Log.objects.filter(task__projects=project)
+            logs = Log.objects.filter(project=project)
             all_logs.extend(logs)
         return all_logs
