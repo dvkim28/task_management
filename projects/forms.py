@@ -52,6 +52,7 @@ class TaskGeneralForm(forms.ModelForm):
         model = Task
         fields = ["priority", "assigned_to", "deadline", "status", ]
 
+
 class InviteNewMemberForm(forms.ModelForm):
     projects = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),

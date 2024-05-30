@@ -6,7 +6,9 @@ from config.settings import AUTH_USER_MODEL
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
-    managements = models.ManyToManyField(AUTH_USER_MODEL, blank=True, null=True)
+    managements = models.ManyToManyField(AUTH_USER_MODEL,
+                                         blank=True,
+                                         null=True)
 
     def __str__(self):
         return self.name
@@ -35,7 +37,9 @@ class Task(models.Model):
         ("High", 'High'),
         ("Critical", 'Critical'),
     ]
-    priority = models.CharField(choices=priorities, default="Low", max_length=100)
+    priority = models.CharField(choices=priorities,
+                                default="Low",
+                                max_length=100)
     assigned_to = models.ForeignKey(AUTH_USER_MODEL,
                                     blank=True,
                                     null=True,
@@ -45,7 +49,8 @@ class Task(models.Model):
                                   on_delete=models.CASCADE,
                                   related_name='types')
     projects = models.ForeignKey(Project,
-                                 on_delete=models.CASCADE, related_name='tasks')
+                                 on_delete=models.CASCADE,
+                                 related_name='tasks')
     statuses = [
         ("To do", 'To do'),
         ("In progress", 'In progress'),
@@ -67,8 +72,12 @@ class Task(models.Model):
 class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')
+    task = models.ForeignKey(Task,
+                             on_delete=models.CASCADE,
+                             related_name='comments')
     text = models.TextField()
 
     def __str__(self):
-        return f"Comment from {self.author} at {self.created_at}| project {self.task.projects}"
+        return (f"Comment from {self.author} "
+                f"at {self.created_at}|"
+                f" project {self.task.projects}")

@@ -16,7 +16,7 @@
                 Task{{ request.user.assigned_to.count|pluralize }}</h3>
             </div>
 
-            <div class="col-3 text-right">
+            <div class="col-12 text-right">
               <p class="m-b-0">{{ request.user.projects.count }} Project{{ request.user.projects.count|pluralize }}</p>
             </div>
           </div>
@@ -41,7 +41,7 @@
                 {{ expired_tasks.count }} Task{{ expired_tasks.count|pluralize }}</h3>
             </div>
             <div class="col-12 text-right">
-              <p class="m-b-0">{{ percent_of_expired_tasks }}% of all your tasks</p>
+              <p class="m-b-0">{{ percent_of_expired_tasks }}% of your backlog</p>
             </div>
           </div>
           <div class="progress m-t-30" style="height: 7px;">
@@ -62,9 +62,9 @@
             <div class="col-9">
               <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i
                   class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>
-                {{ bugs.count }} bug{{ bugs.count|pluralize }} on you</h3>
+                {{ bugs.count }} bug{{ bugs.count|pluralize }}</h3>
             </div>
-            <div class="col-3 text-right">
+            <div class="col-12 text-right">
               <p class="m-b-0">{{ percent_of_bugs }}% of all your task{{ percent_of_bugs|pluralize }}</p>
             </div>
           </div>
@@ -81,12 +81,10 @@
     <!-- [ rating list ] end-->
     <div class="col-xl-12 col-md-12 m-b-30">
       <ul class="nav nav-tabs" id="myTab" role="tablist">
-        {% for project in request.user.projects.all %}
-          <li class="nav-item">
-            <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-               aria-selected="false">{{ project.name }}</a>
-          </li>
-        {% endfor %}
+        <li class="nav-item">
+          <h6 class="mb-4">Recent activity</h6>
+
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade active show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -114,7 +112,7 @@
                   <h6 class="m-0">{{ log.user.username }}</h6>
                 </td>
                 <td>
-                  <h6 class="m-0"><b><a href="{% url "projects:task_detail" log.task.pk %}">{{ log.task.title }}</a>
+                  <h6 class="m-0"><a href="{% url "projects:task_detail" log.task.pk %}">{{ log.task.title }}</a>
                   </h6>
                 </td>
                 <td>

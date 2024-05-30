@@ -1,25 +1,28 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 from django.views.generic import TemplateView
 
-from accounts.models import User
 from logs.models import Log
-from projects.models import Task, Project
+from projects.models import Task
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'pages/index.html'
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context["expired_tasks"] = self.get_expired_tasks()
-        context["percent_of_expired_tasks"] = self.get_percent_of_expired_tasks()
+        context["percent_of_expired_tasks"] = (
+            self.get_percent_of_expired_tasks())
         context["bugs"] = self.get_bugs()
         context["percent_of_bugs"] = self.get_percent_of_bugs()
         context["logs"] = self.get_logs()
         return context
 
     def get_user_tasks(self):
-        return Task.objects.filter(assigned_to=self.request.user, is_done=False)
+        return Task.objects.filter(
+            assigned_to=self.request.user,
+            is_done=False)
 
     def get_expired_tasks(self):
         tasks = self.get_user_tasks()
@@ -48,7 +51,7 @@ class IndexView(TemplateView):
 
     def get_logs(self):
         projects = list(self.request.user.projects.all())
-        all_logs =[]
+        all_logs = []
         for project in projects:
             logs = Log.objects.filter(task__projects=project)
             all_logs.extend(logs)

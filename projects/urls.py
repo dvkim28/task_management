@@ -1,6 +1,9 @@
 from django.urls import path
 
-from projects.views import ProjectDetailView, TaskCreateView, ProjectCreateView, TaskDetailView
+from projects.views import (ProjectDetailView,
+                            TaskCreateView,
+                            ProjectCreateView,
+                            TaskDetailView)
 
 app_name = 'projects'
 

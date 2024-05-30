@@ -7,7 +7,11 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView
 
 from accounts.models import User
-from projects.forms import CreateTaskForm, CommentForm, TaskGeneralForm, InviteNewMemberForm
+from logs.models import Log
+from projects.forms import (CreateTaskForm,
+                            CommentForm,
+                            TaskGeneralForm,
+                            InviteNewMemberForm)
 from projects.models import Project, Task
 
 
@@ -54,7 +58,8 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
                 user_obj = User.objects.get(pk=user.pk)
                 user_obj.projects.add(project)
             return HttpResponseRedirect(
-                reverse_lazy("projects:project_detail", kwargs={"pk": project.pk})
+                reverse_lazy("projects:project_detail",
+                             kwargs={"pk": project.pk})
             )
         return self.get(request, *args, **kwargs)
 
@@ -76,8 +81,15 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         creator = request.user
         if form.is_valid():
             form.instance.creator = creator
-            form.save()
             project_pk = form.instance.projects.pk
+            form.save()
+            project = Project.objects.get(pk=project_pk)
+            Log.objects.create(
+                user=self.request.user,
+                action="Created",
+                task=form.instance,
+                project=project,
+            )
             return HttpResponseRedirect(
                 reverse_lazy("projects:project_detail",
                              kwargs={"pk": project_pk}))
@@ -106,6 +118,13 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             form.instance.task = self.object
             form.save()
             task_pk = form.instance.task.pk
+            task = Task.objects.get(pk=task_pk)
+            Log.objects.create(
+                user=self.request.user,
+                action="Added comment",
+                task=task,
+                project=project,
+            )
             return HttpResponseRedirect(
                 reverse_lazy("projects:task_detail", kwargs={"pk": task_pk})
             )
@@ -121,6 +140,12 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
                 task.deadline = deadline
                 task.status = data.get("status")
                 task.save()
+                Log.objects.create(
+                    user=self.request.user,
+                    action="Updated task",
+                    task=task,
+                    project=project,
+                )
             return HttpResponseRedirect(
                 reverse_lazy("projects:task_detail", kwargs={"pk": task_pk})
             )
