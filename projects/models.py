@@ -6,6 +6,7 @@ from config.settings import AUTH_USER_MODEL
 class Project(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
+    managements = models.ManyToManyField(AUTH_USER_MODEL, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -42,9 +43,9 @@ class Task(models.Model):
                                     related_name='assigned_to')
     task_type = models.ForeignKey(TaskType,
                                   on_delete=models.CASCADE,
-                                  related_name='task_type')
+                                  related_name='types')
     projects = models.ForeignKey(Project,
-                                 on_delete=models.CASCADE)
+                                 on_delete=models.CASCADE, related_name='tasks')
     statuses = [
         ("To do", 'To do'),
         ("In progress", 'In progress'),

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "accounts",
     "projects",
     "django_select2",
+    "logs"
 
 ]
 

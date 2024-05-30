@@ -17,11 +17,12 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     template_name = "pages/project-create.html"
 
     def post(self, request, *args, **kwargs):
-        creator = request.user
+        manager = request.user
         form = self.get_form()
         if form.is_valid():
             form.save()
-            form.instance.crew.add(creator)
+            form.instance.managements.add(manager)
+            manager.projects.add(form.instance)
             project_pk = form.instance.pk
             return HttpResponseRedirect(
                 reverse_lazy("projects:project_detail",
@@ -41,6 +42,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context["InviteNewMemberForm"] = InviteNewMemberForm
         context["members"] = User.objects.filter(projects=self.object)
+        context["percent_of_task"] = (Task.objects.all())
         return context
 
     def post(self, request, *args, **kwargs):
