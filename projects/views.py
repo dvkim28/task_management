@@ -7,7 +7,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from accounts.models import User
 from logs.models import Log
 from projects.forms import (CommentForm, CreateTaskForm, InviteNewMemberForm,
-                            TaskGeneralForm)
+                            TaskGeneralForm, FilterByProjectForm)
 from projects.models import Project, Task
 
 
@@ -40,7 +40,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
-        context["InviteNewMemberForm"] = InviteNewMemberForm
+        context["InviteNewMemberForm"] = InviteNewMemberForm(project=self.object)
         context["members"] = User.objects.filter(projects=self.object)
         return context
 
@@ -79,7 +79,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             project_pk = form.instance.projects.pk
             form.save()
             project = Project.objects.get(pk=project_pk)
-            task = Task.objects.last()
+            task = form.instance
             Log.objects.create(
                 user=self.request.user,
                 action=f"Created task: {task.title}",
@@ -146,6 +146,16 @@ class TasksListView(LoginRequiredMixin, ListView):
     context_object_name = "tasks"
     template_name = "pages/task-list.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(TasksListView, self).get_context_data(*kwargs)
+        context["FilterByProjectForm"] = FilterByProjectForm()
+        return context
+
     def get_queryset(self):
-        return Task.objects.filter(assigned_to=self.request.user)
+        tasks = Task.objects.filter(assigned_to=self.request.user)
+        filter_form = FilterByProjectForm(self.request.GET)
+        if filter_form.is_valid() and filter_form.cleaned_data['projects']:
+            return tasks.filter(projects=filter_form.cleaned_data['projects'])
+        return tasks
+
 

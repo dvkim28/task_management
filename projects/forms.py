@@ -2,7 +2,7 @@ from django import forms
 from django.forms import DateInput
 
 from accounts.models import User
-from projects.models import Comment, Task
+from projects.models import Comment, Task, Project
 
 
 class CreateTaskForm(forms.ModelForm):
@@ -59,6 +59,22 @@ class InviteNewMemberForm(forms.ModelForm):
         label="",
     )
 
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        super(InviteNewMemberForm, self).__init__(*args, **kwargs)
+        if project:
+            project_users = User.objects.filter(projects__id=project.id)
+            self.fields['projects'].queryset = User.objects.exclude(id__in=project_users)
+
     class Meta:
         model = User
         fields = ["projects"]
+
+
+class FilterByProjectForm(forms.Form):
+    projects = forms.ModelChoiceField(
+        label="",
+        queryset=Project.objects.all(),
+        required=False,
+        empty_label="Filter by project",
+    )
