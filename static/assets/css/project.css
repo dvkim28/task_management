@@ -188,4 +188,21 @@
 
 .td-comment-form button:hover {
     background-color: #0056b3;
+
 }
+
+.table-custom-bg {
+      background-color: #f8f9fa; /* светло-серый фон */
+    }
+    .table-custom-bg {
+    background-color: #313d50;
+        color: white;
+    }
+    .table-custom-bg thead {
+      background-color: rgba(76, 92, 123, 0.6);
+      color: white;
+    }
+    .table-hover tbody tr:hover {
+      background-color: rgba(102, 108, 121, 0.28);
+      color: white;
+    }

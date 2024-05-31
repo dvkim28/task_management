@@ -2,7 +2,7 @@ from django import forms
 from django.forms import DateInput
 
 from accounts.models import User
-from projects.models import Task, Comment
+from projects.models import Comment, Task
 
 
 class CreateTaskForm(forms.ModelForm):
@@ -55,7 +55,7 @@ class TaskGeneralForm(forms.ModelForm):
 
 class InviteNewMemberForm(forms.ModelForm):
     projects = forms.ModelMultipleChoiceField(
-        queryset=User.objects.all(),
+        queryset=User.objects.filter(),
         label="",
     )
 

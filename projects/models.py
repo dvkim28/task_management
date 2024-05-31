@@ -65,8 +65,8 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
-    def formatted_date(self):
-        return self.deadline.strftime("%d/%m/%Y")
+    class Meta:
+        ordering = ['-created_at']
 
 
 class Comment(models.Model):

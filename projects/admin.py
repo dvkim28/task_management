@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from projects.models import Task, Project, TaskType, Comment
+from projects.models import Comment, Project, Task, TaskType
 
 
 @admin.register(Task)

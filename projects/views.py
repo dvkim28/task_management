@@ -1,17 +1,13 @@
-from datetime import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, CreateView
+from django.views.generic import CreateView, DetailView, ListView
 
 from accounts.models import User
 from logs.models import Log
-from projects.forms import (CreateTaskForm,
-                            CommentForm,
-                            TaskGeneralForm,
-                            InviteNewMemberForm)
+from projects.forms import (CommentForm, CreateTaskForm, InviteNewMemberForm,
+                            TaskGeneralForm)
 from projects.models import Project, Task
 
 
@@ -56,11 +52,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
             for user in users:
                 user_obj = User.objects.get(pk=user.pk)
                 user_obj.projects.add(project)
-                Log.objects.create(
-                    user=self.request.user,
-                    action=f"Invited: {user.username}",
-                    project=project,
-                )
             return HttpResponseRedirect(
                 reverse_lazy("projects:project_detail",
                              kwargs={"pk": project.pk})
@@ -88,15 +79,15 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             project_pk = form.instance.projects.pk
             form.save()
             project = Project.objects.get(pk=project_pk)
+            task = Task.objects.last()
             Log.objects.create(
                 user=self.request.user,
-                action=f"Created task: {self.object.name}",
-                task=form.instance,
+                action=f"Created task: {task.title}",
                 project=project,
             )
             return HttpResponseRedirect(
                 reverse_lazy("projects:project_detail",
-                             kwargs={"pk": project_pk}))
+                             kwargs={"pk": project.pk}))
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
@@ -121,7 +112,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             form.instance.author = author
             form.instance.task = self.object
             form.save()
-            task = Task.objects.get(pk=task_pk)
+            task = Task.objects.get(pk=form.instance.task.pk)
             Log.objects.create(
                 user=self.request.user,
                 action=f"Added comment to the task: {task.title}",
@@ -149,3 +140,12 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             return HttpResponseRedirect(
                 reverse_lazy("projects:task_detail", kwargs={"pk": task.pk})
             )
+
+class TasksListView(LoginRequiredMixin, ListView):
+    model = Task
+    context_object_name = "tasks"
+    template_name = "pages/task-list.html"
+
+    def get_queryset(self):
+        return Task.objects.filter(assigned_to=self.request.user)
+

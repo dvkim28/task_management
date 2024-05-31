@@ -1,16 +1,13 @@
-from django.contrib.auth import login
+from django.contrib.auth import get_user_model, login
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import request
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
-from accounts.forms import UserProfileForm
-from accounts.models import User
-
 
 class UserRegistrationView(CreateView):
-    model = User
-    fields = ("username", "email", "password")
+    model = get_user_model()
+    form_class = UserCreationForm
     template_name = "registration/signup.html"
 
     def get_success_url(self):
@@ -27,13 +24,12 @@ class UserRegistrationView(CreateView):
 
 
 class UserUpdateProfileView(LoginRequiredMixin, UpdateView):
-    model = User
-    form_class = UserProfileForm
+    model = get_user_model()
     template_name = "pages/profile.html"
     context_object_name = "user"
 
     def get_queryset(self):
-        return User.objects.filter(id=self.request.user.id)
+        return get_user_model().objects.filter(id=self.request.user.id)
 
     def get_success_url(self):
         return reverse_lazy(

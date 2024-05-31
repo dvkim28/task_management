@@ -1,7 +1,7 @@
 from django.db import models
 
 from accounts.models import User
-from projects.models import Task, Project
+from projects.models import Project, Task
 
 
 class Log(models.Model):
