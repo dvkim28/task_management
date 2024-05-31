@@ -1,7 +1,9 @@
 asgiref==3.8.1
 crispy-bootstrap4==2024.1
 Django==4.2.13
+django-appconf==1.0.6
 django-crispy-forms==2.1
+django-select2==8.1.2
 flake8==7.0.0
 isort==5.13.2
 mccabe==0.7.0
