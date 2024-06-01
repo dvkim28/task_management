@@ -78,3 +78,18 @@ class FilterByProjectForm(forms.Form):
         required=False,
         empty_label="Filter by project",
     )
+
+
+class FilterByMembersForm(forms.Form):
+    member = forms.ModelChoiceField(
+        label="",
+        queryset=User.objects.all(),
+        required=False,
+    )
+
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        super(FilterByMembersForm, self).__init__(*args, **kwargs)
+        if project:
+            project_users = User.objects.filter(projects__id=project.id)
+            self.fields['member'].queryset = User.objects.filter(id__in=project_users)

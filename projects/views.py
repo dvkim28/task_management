@@ -1,4 +1,3 @@
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -7,7 +6,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from accounts.models import User
 from logs.models import Log
 from projects.forms import (CommentForm, CreateTaskForm, InviteNewMemberForm,
-                            TaskGeneralForm, FilterByProjectForm)
+                            TaskGeneralForm, FilterByProjectForm, FilterByMembersForm)
 from projects.models import Project, Task
 
 
@@ -40,8 +39,20 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
-        context["InviteNewMemberForm"] = InviteNewMemberForm(project=self.object)
         context["members"] = User.objects.filter(projects=self.object)
+        context["InviteNewMemberForm"] = InviteNewMemberForm(project=self.object)
+
+        filter_form = FilterByMembersForm(self.request.GET, project=self.object)
+        context["FilterByMembers"] = filter_form
+
+        if filter_form.is_valid() and filter_form.cleaned_data.get("member"):
+            context["tasks"] = Task.objects.filter(
+                projects=self.object,
+                assigned_to=filter_form.cleaned_data["member"]
+            )
+        else:
+            context["tasks"] = Task.objects.all()
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -141,6 +152,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
                 reverse_lazy("projects:task_detail", kwargs={"pk": task.pk})
             )
 
+
 class TasksListView(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = "tasks"
@@ -157,5 +169,3 @@ class TasksListView(LoginRequiredMixin, ListView):
         if filter_form.is_valid() and filter_form.cleaned_data['projects']:
             return tasks.filter(projects=filter_form.cleaned_data['projects'])
         return tasks
-
-
