@@ -41,19 +41,21 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context["members"] = User.objects.filter(projects=self.object)
         context["InviteNewMemberForm"] = InviteNewMemberForm(project=self.object)
-
-        filter_form = FilterByMembersForm(self.request.GET, project=self.object)
-        context["FilterByMembers"] = filter_form
-
-        if filter_form.is_valid() and filter_form.cleaned_data.get("member"):
-            context["tasks"] = Task.objects.filter(
-                projects=self.object,
-                assigned_to=filter_form.cleaned_data["member"]
-            )
-        else:
-            context["tasks"] = Task.objects.all()
-
+        context["filter_form"] = FilterByMembersForm(self.request.GET, project=self.object)
+        context["tasks"] = self.get_tasks_by_member()
         return context
+
+    def get_tasks_by_member(self):
+        tasks = Task.objects.filter(projects=self.object)
+        if self.request.method == "GET":
+            form = FilterByMembersForm(self.request.GET, project=self.object)
+            if form.is_valid():
+                member = form.cleaned_data["member"]
+                if member is not None:
+                    filtered_tasks = tasks.filter(assigned_to=member)
+                    print(filtered_tasks)
+                    return filtered_tasks
+        return tasks
 
     def post(self, request, *args, **kwargs):
         form = InviteNewMemberForm(request.POST)

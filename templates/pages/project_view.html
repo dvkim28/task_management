@@ -27,7 +27,7 @@
             <div class="crew-members">
               <span>Filter by: </span>
               <form action="">
-                {{ FilterByMembers|crispy }}
+                {{ filter_form|crispy }}
                 <button type="submit" class="btn btn-info">Filter</button>
               </form>
 
@@ -42,7 +42,7 @@
               <div class="container">
                 <div class="column">
                   <div class="column-header">To Do</div>
-                  {% for task in project.tasks.all %}
+                  {% for task in tasks.all %}
                     {% if task.status == "To do" %}
                       <div class="card">
                         <a href="{% url "projects:task_detail" task.id %}">
@@ -100,7 +100,7 @@
                 </div>
                 <div class="column">
                   <div class="column-header">Done</div>
-                  {% for task in project.task_set.all %}
+                  {% for task in tasks.all %}
                     {% if task.status == "Done" %}
                       <div class="card">
                         <a href="{% url "projects:task_detail" task.id %}">
