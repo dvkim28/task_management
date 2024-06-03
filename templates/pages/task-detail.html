@@ -35,7 +35,7 @@
         <div class="td-task-info">
           <h2>Task Details</h2>
           <form action="" method="post" novalidate>
-            {{ TaskGeneralForm|crispy }}
+            {{ TaskGeneralForm }}
             {% csrf_token %}
             <p><strong>Created on:</strong> {{ task.created_at }}</p>
 

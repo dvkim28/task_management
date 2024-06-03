@@ -111,7 +111,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context["CommentForm"] = CommentForm()
-        context["TaskGeneralForm"] = TaskGeneralForm(project=self.object.projects)
+        context["TaskGeneralForm"] = TaskGeneralForm(project=self.object.projects, instance=self.object)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -138,12 +138,12 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
             form = TaskGeneralForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
-                deadline = data.get("deadline")
+                deadline = data["deadline"]
                 task = self.object
-                task.priority = data.get("priority")
-                task.assigned_to = data.get("assigned_to")
+                task.priority = data["priority"]
+                task.assigned_to = data["assigned_to"]
                 task.deadline = deadline
-                task.status = data.get("status")
+                task.status = data["status"]
                 task.save()
                 Log.objects.create(
                     user=self.request.user,
@@ -151,7 +151,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
                     project=project,
                 )
             return HttpResponseRedirect(
-                reverse_lazy("projects:task_detail", kwargs={"pk": task.pk})
+                reverse_lazy("projects:task_detail", kwargs={"pk": self.object.pk})
             )
 
 
