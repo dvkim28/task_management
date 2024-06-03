@@ -52,6 +52,14 @@ class TaskGeneralForm(forms.ModelForm):
         model = Task
         fields = ["priority", "assigned_to", "deadline", "status", ]
 
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        super(TaskGeneralForm, self).__init__(*args, **kwargs)
+        print(project)
+        if project:
+            project_users = User.objects.filter(projects__id=project.id)
+            self.fields['assigned_to'].queryset = User.objects.filter(id__in=project_users)
+
 
 class InviteNewMemberForm(forms.ModelForm):
     projects = forms.ModelMultipleChoiceField(

@@ -111,7 +111,7 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context["CommentForm"] = CommentForm()
-        context["TaskGeneralForm"] = TaskGeneralForm(instance=self.object)
+        context["TaskGeneralForm"] = TaskGeneralForm(project=self.object.projects)
         return context
 
     def post(self, request, *args, **kwargs):
