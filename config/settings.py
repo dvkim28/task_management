@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = "accounts.User"
 
 
 # Application definition
@@ -43,10 +42,11 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     "accounts",
     "projects",
-    "django_select2",
-    "logs"
+    "logs",
 
 ]
+AUTH_USER_MODEL = "accounts.User"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
