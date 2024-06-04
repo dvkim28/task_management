@@ -12,12 +12,8 @@
     {% else %}
       
       <div class="row">
-      
         <div class="col-sm-12">
           <div class="card">
-          {% if request.user in project.managements.all %}<br>
-                <button type="button" class="btn btn-info">Project admin settings</button>
-              {% endif %}
             <div class="card-header">
               <h5>{{ project.name }} project</h5>
               <a href="{% url "projects:task_create" %}">
@@ -25,15 +21,15 @@
               </a>
             </div>
             <div class="crew-members">
+                      <div class="col-sm-12">
               <span>Filter by: </span>
               <form action="">
                 {{ filter_form|crispy }}
                 <button type="submit" class="btn btn-info">Filter</button>
               </form>
-
+                      </div>
             </div>
-            <br>
-            <form action="" method="post" novalidate>
+                     <form action="" method="post" novalidate>
               {{ InviteNewMemberForm|crispy }}
               {% csrf_token %}
               <button type="submit" class="btn btn-outline-info">Invite new member</button>

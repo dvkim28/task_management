@@ -101,3 +101,44 @@ class FilterByMembersForm(forms.Form):
         if project:
             project_users = User.objects.filter(projects__id=project.id)
             self.fields['member'].queryset = User.objects.filter(id__in=project_users)
+
+
+class ProjectMemberForm(forms.ModelForm):
+    projects = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+    class Meta:
+        model = User
+        fields = ["projects"]
+
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        super(ProjectMemberForm, self).__init__(*args, **kwargs)
+        if project:
+            project_users = User.objects.filter(projects__id=project.id)
+            self.fields['projects'].queryset = project_users
+
+
+class ProjectManagementForm(forms.ModelForm):
+    projects = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+    class Meta:
+        model = Project
+        fields = ["projects"]
+
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        super(ProjectManagementForm, self).__init__(*args, **kwargs)
+        if project:
+            project_managers = User.objects.filter(managers__id=project.id)
+            self.fields['projects'].queryset = project_managers
+
+
+class ProjectManagementInvitationForm(forms.Form):
+    member = forms.ModelMultipleChoiceField(queryset=User.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        project = kwargs.pop('project', None)
+        super(ProjectManagementInvitationForm, self).__init__(*args, **kwargs)
+        if project:
+            project_users = User.objects.filter(projects__id=project.id)
+            self.fields['member'].queryset = project_users

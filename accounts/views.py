@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView
 
+from accounts.forms import UserProfileForm
+
 
 class UserRegistrationView(CreateView):
     model = get_user_model()
@@ -29,7 +31,7 @@ class UserUpdateProfileView(LoginRequiredMixin, UpdateView):
     model = get_user_model()
     template_name = "pages/profile.html"
     context_object_name = "user"
-    fields = ("first_name","last_name", "email", "username", "position","company", "about_info")
+    form_class = UserProfileForm
 
     def get_queryset(self):
         return get_user_model().objects.filter(id=self.request.user.id)
