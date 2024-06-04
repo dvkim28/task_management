@@ -10,7 +10,9 @@ from projects.forms import (CommentForm,
                             InviteNewMemberForm,
                             TaskGeneralForm,
                             FilterByProjectForm,
-                            FilterByMembersForm, ProjectMemberForm, ProjectManagementForm,
+                            FilterByMembersForm,
+                            ProjectMemberForm,
+                            ProjectManagementForm,
                             ProjectManagementInvitationForm)
 from projects.models import Project, Task
 
@@ -45,8 +47,12 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context["members"] = User.objects.filter(projects=self.object)
-        context["InviteNewMemberForm"] = InviteNewMemberForm(project=self.object)
-        context["filter_form"] = FilterByMembersForm(self.request.GET, project=self.object)
+        context["InviteNewMemberForm"] = InviteNewMemberForm(
+            project=self.object
+        )
+        context["filter_form"] = FilterByMembersForm(
+            self.request.GET,
+            project=self.object)
         context["tasks"] = self.get_tasks_by_member()
         return context
 
@@ -116,7 +122,10 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
         context["CommentForm"] = CommentForm()
-        context["TaskGeneralForm"] = TaskGeneralForm(project=self.object.projects, instance=self.object)
+        context["TaskGeneralForm"] = TaskGeneralForm(
+            project=self.object.projects,
+            instance=self.object,
+        )
         return context
 
     def post(self, request, *args, **kwargs):
@@ -156,7 +165,8 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
                     project=project,
                 )
             return HttpResponseRedirect(
-                reverse_lazy("projects:task_detail", kwargs={"pk": self.object.pk})
+                reverse_lazy("projects:task_detail",
+                             kwargs={"pk": self.object.pk})
             )
 
 
@@ -206,7 +216,9 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
                 except User.DoesNotExist:
                     pass
 
-        management_invitation_form = ProjectManagementInvitationForm(request.POST, project=project)
+        management_invitation_form = ProjectManagementInvitationForm(
+            request.POST, project=project
+        )
         if management_invitation_form.is_valid():
             for member in management_invitation_form.cleaned_data['member']:
                 try:
@@ -214,11 +226,16 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
                     project.managements.add(user)
                 except User.DoesNotExist:
                     pass
-        return HttpResponseRedirect(reverse_lazy("projects:project_detail", kwargs={"pk": project.pk}))
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "projects:project_detail", kwargs={"pk": project.pk})
+        )
 
     def get_context_data(self, **kwargs):
         context = super(ProjectUpdateView, self).get_context_data(**kwargs)
         context["MemberForm"] = ProjectMemberForm(project=self.object)
         context["ManagementForm"] = ProjectManagementForm(project=self.object)
-        context["management_invitation_form"] = ProjectManagementInvitationForm(project=self.object)
+        context["management_invitation_form"] = (
+            ProjectManagementInvitationForm(project=self.object)
+        )
         return context

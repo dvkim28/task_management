@@ -58,7 +58,8 @@ class TaskGeneralForm(forms.ModelForm):
         print(project)
         if project:
             project_users = User.objects.filter(projects__id=project.id)
-            self.fields['assigned_to'].queryset = User.objects.filter(id__in=project_users)
+            self.fields['assigned_to'].queryset =\
+                User.objects.filter(id__in=project_users)
 
 
 class InviteNewMemberForm(forms.ModelForm):
@@ -72,7 +73,8 @@ class InviteNewMemberForm(forms.ModelForm):
         super(InviteNewMemberForm, self).__init__(*args, **kwargs)
         if project:
             project_users = User.objects.filter(projects__id=project.id)
-            self.fields['projects'].queryset = User.objects.exclude(id__in=project_users)
+            self.fields['projects'].queryset = (
+                User.objects.exclude(id__in=project_users))
 
     class Meta:
         model = User
@@ -100,11 +102,16 @@ class FilterByMembersForm(forms.Form):
         super(FilterByMembersForm, self).__init__(*args, **kwargs)
         if project:
             project_users = User.objects.filter(projects__id=project.id)
-            self.fields['member'].queryset = User.objects.filter(id__in=project_users)
+            self.fields['member'].queryset = (
+                User.objects.filter(
+                    id__in=project_users)
+            )
 
 
 class ProjectMemberForm(forms.ModelForm):
-    projects = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+    projects = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = User
@@ -119,7 +126,9 @@ class ProjectMemberForm(forms.ModelForm):
 
 
 class ProjectManagementForm(forms.ModelForm):
-    projects = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+    projects = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = Project
