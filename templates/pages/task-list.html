@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block extrastyle %}
+  <link rel="stylesheet" href="{% static 'assets/css/project.css' %}">
+{% endblock extrastyle %}
+{% block content %}
+  <form action="" method="get">
+    {{ FilterByProjectForm|crispy }}
+    <button type="submit" class="btn btn-info">Filter</button>
+  </form>
+  <!-- [ Main Content ] start -->
+  <table class="table table-hover table-custom-bg">
+    <thead>
+    <tr>
+      <th scope="col">Project</th>
+      <th scope="col">Title</th>
+      <th scope="col">Type</th>
+      <th scope="col">Status</th>
+      <th scope="col">Deadline</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in tasks %}
+      <tr>
+        <th scope="row">{{ task.projects }}</th>
+        <td>{{ task.title }}</td>
+        <td>{{ task.task_type }}</td>
+        <td>{{ task.status }}</td>
+        <td>{{ task.deadline }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

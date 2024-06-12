@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+
+  <!-- [ Main Content ] start -->
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Creating new project</h5>
+        </div>
+        <div class="card-block">
+          <form action="" method="post">
+            {{ form|crispy }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Create project</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- [ Main Content ] end -->
+
+{% endblock content %}

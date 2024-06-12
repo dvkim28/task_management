@@ -1,0 +1,208 @@
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    display: flex;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+}
+
+.column {
+    flex: 4;
+    background-color: #3f4d67;
+/ border-radius: 10 px;
+    margin-right: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.column:last-child {
+    margin-right: 0;
+}
+
+.column-header {
+    background-color: rgba(0, 0, 0, 0.2); /* Цвет заголовков колонок */
+    color: #c7c7c7;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.card {
+    background-color: #ffffff; /* Белый фон для карточек */
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 8px rgba(124, 124, 124, 0.24);
+}
+
+.card-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.card-text {
+    margin-bottom: 3px;
+    color: #c7c7c7;
+}
+
+.crew-members {
+    display: flex;
+}
+
+.crew-members span {
+    margin-right: 10px; /* Опционально: добавляет небольшое расстояние между участниками */
+}
+
+#task-detail-container {
+    font-family: Arial, sans-serif;
+    background-color: #3f4d67;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.td-left-column{
+ width: 70%;
+}
+#task-detail-container .td-header {
+    border-bottom: 1px solid #dfe1e6;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+#task-detail-container .td-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#task-detail-container .td-content {
+    display: flex;
+    gap: 10px;
+}
+
+#task-detail-container .td-left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#task-detail-container .td-description,
+#task-detail-container .td-comments,
+#task-detail-container .td-task-info {
+    background-color: #313d50;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+#task-detail-container .td-description h2,
+#task-detail-container .td-comments h2,
+#task-detail-container .td-task-info h2 {
+    margin-top: 0;
+}
+
+#task-detail-container .td-comment {
+    margin-bottom: 10px;
+}
+
+#task-detail-container .td-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#task-detail-container .td-footer .td-edit-btn,
+#task-detail-container .td-footer .td-delete-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#task-detail-container .td-footer .td-edit-btn {
+    background-color: #0052cc;
+    color: #fff;
+}
+
+#task-detail-container .td-footer .td-delete-btn {
+    background-color: #ff5630;
+    color: #fff;
+}
+
+.card > a {
+    text-decoration: none;
+}
+
+
+
+.td-comment {
+    background-color: #24354a;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.td-comment strong {
+    color: #ffffff;
+}
+
+.td-comment p {
+    margin: 5px 0;
+}
+
+.td-comment-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.td-comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.td-comment-form button {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.td-comment-form button:hover {
+    background-color: #0056b3;
+
+}
+
+.table-custom-bg {
+      background-color: #f8f9fa; /* светло-серый фон */
+    }
+    .table-custom-bg {
+    background-color: #313d50;
+        color: white;
+    }
+    .table-custom-bg thead {
+      background-color: rgba(76, 92, 123, 0.6);
+      color: white;
+    }
+    .table-hover tbody tr:hover {
+      background-color: rgba(102, 108, 121, 0.28);
+      color: white;
+    }

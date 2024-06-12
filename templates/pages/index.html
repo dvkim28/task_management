@@ -1,0 +1,124 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-md-6 col-xl-4">
+      <div class="card daily-sales">
+        <div class="card-block">
+          <h6 class="mb-4">You are assigned to:</h6>
+          <div class="row d-flex align-items-center">
+            <div class="col-9">
+              <h3 class="f-w-300 d-flex align-items-center m-b-0"><i
+                  class="feather icon-briefcase f-30 m-r-10"></i>{{ request.user.assigned_to.count }}
+                Task{{ request.user.assigned_to.count|pluralize }}</h3>
+            </div>
+
+            <div class="col-12 text-right">
+              <p class="m-b-0">{{ request.user.projects.count }} Project{{ request.user.projects.count|pluralize }}</p>
+            </div>
+          </div>
+          <div class="progress m-t-30" style="height: 7px;">
+            <div class="progress-bar progress-c-theme" role="progressbar"
+                 style="width:{{ request.user.projects.count }}%;"
+                 aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--[ daily sales section ] end-->
+    <!--[ Monthly  sales section ] starts-->
+    <div class="col-md-6 col-xl-4">
+      <div class="card Monthly-sales">
+        <div class="card-block">
+          <h6 class="mb-4">Expired Tasks</h6>
+          <div class="row d-flex align-items-center">
+            <div class="col-9">
+              <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i
+                  class="feather icon-activity text-c-red f-30 m-r-10"></i>
+                {{ expired_tasks.count }} Task{{ expired_tasks.count|pluralize }}</h3>
+            </div>
+            <div class="col-12 text-right">
+              <p class="m-b-0">{{ percent_of_expired_tasks }}% of your backlog</p>
+            </div>
+          </div>
+          <div class="progress m-t-30" style="height: 7px;">
+            <div class="progress-bar progress-c-theme2" role="progressbar"
+                 style="width: {{ percent_of_expired_tasks }}%;"
+                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="{{ request.user.assigned_to.count }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--[ Monthly  sales section ] end-->
+    <!--[ year  sales section ] starts-->
+    <div class="col-md-12 col-xl-4">
+      <div class="card yearly-sales">
+        <div class="card-block">
+          <h6 class="mb-4">Your bugs</h6>
+          <div class="row d-flex align-items-center">
+            <div class="col-9">
+              <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i
+                  class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>
+                {{ bugs.count }} bug{{ bugs.count|pluralize }}</h3>
+            </div>
+            <div class="col-12 text-right">
+              <p class="m-b-0">{{ percent_of_bugs }}% of all your task{{ percent_of_bugs|pluralize }}</p>
+            </div>
+          </div>
+          <div class="progress m-t-30" style="height: 7px;">
+            <div class="progress-bar progress-c-theme" role="progressbar" style="width: {{ percent_of_bugs }}%;"
+                 aria-valuenow="70" aria-valuemin="0" aria-valuemax="{{ request.user.assigned_to.count }}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-12 col-md-12 m-b-30">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <h6 class="mb-4">Recent activity</h6>
+
+        </li>
+      </ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade active show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>User</th>
+          <th>Activity</th>
+          <th>When</th>
+          <th class="text-right"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+          <tr>
+            <td>
+              <h6 class="m-0">
+                <a href="{% url "projects:project_detail" log.project.pk %}">{{ log.project.name }}</a>
+              </h6>
+            </td>
+            <td>
+              <h6 class="m-0">{{ log.user.username }}</h6>
+            </td>
+            <td>
+              <h6 class="m-0">{{ log.action }}</h6>
+            </td>
+            <td>
+              <h6 class="m-0 text-c-red">{{ log.timestamp|date:'d-M H:i' }}</h6>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+    </div>
+
+  </div>
+
+{% endblock content %}
