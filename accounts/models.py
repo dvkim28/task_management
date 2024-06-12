@@ -10,3 +10,6 @@ class User(AbstractUser):
     about_info = models.TextField(blank=True, null=True)
     projects = models.ManyToManyField(
         Project, blank=True, verbose_name='members')
+
+    def __str__(self):
+        return self.username

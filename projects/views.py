@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
@@ -112,6 +113,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(
                 reverse_lazy("projects:project_detail",
                              kwargs={"pk": project.pk}))
+        return render(request, 'pages/task_form.html', {'form': form})
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):

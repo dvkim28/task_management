@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model, login
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
