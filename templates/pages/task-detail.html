@@ -1,6 +1,5 @@
 {% extends 'layouts/base.html' %}
 {% load crispy_forms_filters %}
-{% load crispy_forms_filters %}
 {% load static %}
 {% block extrastyle %}
   <link rel="stylesheet" href="{% static 'assets/css/project.css' %}">
@@ -35,7 +34,7 @@
         <div class="td-task-info">
           <h2>Task Details</h2>
           <form action="" method="post" novalidate>
-            {{ TaskGeneralForm }}
+            {{ TaskGeneralForm|crispy }}
             {% csrf_token %}
             <p><strong>Created on:</strong> {{ task.created_at }}</p>
 
