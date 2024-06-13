@@ -8,7 +8,6 @@ class Project(models.Model):
     description = models.TextField()
     managements = models.ManyToManyField(AUTH_USER_MODEL,
                                          blank=True,
-                                         null=True,
                                          related_name='managers')
 
     def __str__(self):
