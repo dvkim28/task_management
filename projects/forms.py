@@ -151,3 +151,8 @@ class ProjectManagementInvitationForm(forms.Form):
         if project:
             project_users = User.objects.filter(projects__id=project.id)
             self.fields['member'].queryset = project_users
+
+class GeneralInfoForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ["name", "description"]

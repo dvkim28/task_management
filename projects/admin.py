@@ -10,7 +10,7 @@ class TaskAdmin(admin.ModelAdmin):
                     'projects',
                     'assigned_to',
                     'deadline',
-                    'statuses')
+                    'status')
     list_filter = ('projects',)
     search_fields = ('title',
                      'creator__username',

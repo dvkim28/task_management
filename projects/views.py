@@ -14,7 +14,7 @@ from projects.forms import (CommentForm,
                             FilterByMembersForm,
                             ProjectMemberForm,
                             ProjectManagementForm,
-                            ProjectManagementInvitationForm)
+                            ProjectManagementInvitationForm, GeneralInfoForm)
 from projects.models import Project, Task
 
 
@@ -176,6 +176,7 @@ class TasksListView(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = "tasks"
     template_name = "pages/task-list.html"
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(TasksListView, self).get_context_data(*kwargs)
@@ -193,11 +194,19 @@ class TasksListView(LoginRequiredMixin, ListView):
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = "pages/project-admin.html"
-    fields = ["name", "description", ]
+    # fields = ["name", "description",]
+    form_class = GeneralInfoForm
 
     def post(self, request, *args, **kwargs):
         project = self.get_object()
-
+        form = self.get_form()
+        if form.is_valid():
+            pass
+        if form.data.get("name"):
+            project.name = form.data.get('name')
+        if form.data.get("description"):
+            project.description = form.data.get('description')
+        project.save()
         member_form = ProjectMemberForm(request.POST, project=project)
         if member_form.is_valid():
             for member in member_form.cleaned_data['projects']:

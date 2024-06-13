@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -16,7 +17,9 @@ class IndexView(LoginRequiredMixin, TemplateView):
             self.get_percent_of_expired_tasks())
         context["bugs"] = self.get_bugs()
         context["percent_of_bugs"] = self.get_percent_of_bugs()
-        context["logs"] = self.get_logs()
+        logs, page_obj = self.get_logs()
+        context["logs"] = logs
+        context["page_obj"] = page_obj
         return context
 
     def get_user_tasks(self):
@@ -55,4 +58,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
         for project in projects:
             logs = Log.objects.filter(project=project)
             all_logs.extend(logs)
-        return all_logs
+        paginator = Paginator(all_logs, 10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return page_obj.object_list, page_obj

@@ -10,26 +10,27 @@
   {% if project in request.user.projects.all %}
     {% if not project.tasks %}
     {% else %}
-      
+
       <div class="row">
         <div class="col-sm-12">
           <div class="card">
             <div class="card-header">
-              <h5>{{ project.name }} project</h5>
+              <h5>{{ project.name }} project {% if request.user in project.managements.all %}
+                <a href="{% url "projects:project_admin" project.id %}">(Admin settings)</a>{% endif %}</h5>
               <a href="{% url "projects:task_create" %}">
                 <button type="button" class="btn btn-outline-success"> New task</button>
               </a>
             </div>
             <div class="crew-members">
-                      <div class="col-sm-12">
-              <span>Filter by: </span>
-              <form action="">
-                {{ filter_form|crispy }}
-                <button type="submit" class="btn btn-info">Filter</button>
-              </form>
-                      </div>
+              <div class="col-sm-12">
+                <span>Filter by: </span>
+                <form action="">
+                  {{ filter_form|crispy }}
+                  <button type="submit" class="btn btn-info">Filter</button>
+                </form>
+              </div>
             </div>
-                     <form action="" method="post" novalidate>
+            <form action="" method="post" novalidate>
               {{ InviteNewMemberForm|crispy }}
               {% csrf_token %}
               <button type="submit" class="btn btn-outline-info">Invite new member</button>

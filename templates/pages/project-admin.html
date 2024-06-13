@@ -13,10 +13,11 @@
           </div>
           <div class="card-block">
             <h3>General info</h3>
-            <form action="" method="post"></form>
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-info">Save</button>
-
+            <form action="" method="post">
+              {% csrf_token %}
+              {{ form|crispy }}
+              <button type="submit" class="btn btn-info">Save</button>
+            </form>
           </div>
         </div>
       </div>
