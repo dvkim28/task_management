@@ -9,7 +9,7 @@ from accounts.forms import UserProfileForm
 
 class UserRegistrationView(CreateView):
     model = get_user_model()
-    fields = ("password", "email", "username")
+    fields = ("username", "email", "password",)
     template_name = "registration/signup.html"
 
     def get_success_url(self):
