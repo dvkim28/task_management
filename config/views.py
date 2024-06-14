@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.utils import timezone
 from django.views.generic import TemplateView
 
@@ -16,13 +17,15 @@ class IndexView(LoginRequiredMixin, TemplateView):
             self.get_percent_of_expired_tasks())
         context["bugs"] = self.get_bugs()
         context["percent_of_bugs"] = self.get_percent_of_bugs()
-        context["logs"] = self.get_logs()
+        logs, page_obj = self.get_logs()
+        context["logs"] = logs
+        context["page_obj"] = page_obj
         return context
 
     def get_user_tasks(self):
         return Task.objects.filter(
             assigned_to=self.request.user,
-            is_done=False)
+            is_done=False).select_related('assigned_to', 'task_type', 'projects')
 
     def get_expired_tasks(self):
         tasks = self.get_user_tasks()
@@ -50,9 +53,9 @@ class IndexView(LoginRequiredMixin, TemplateView):
         return bugs
 
     def get_logs(self):
-        projects = list(self.request.user.projects.all())
-        all_logs = []
-        for project in projects:
-            logs = Log.objects.filter(project=project)
-            all_logs.extend(logs)
-        return all_logs
+        projects = self.request.user.projects.prefetch_related('tasks').all()
+        all_logs = Log.objects.filter(project__in=projects).select_related('user', 'project')
+        paginator = Paginator(all_logs, 10)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return page_obj.object_list, page_obj

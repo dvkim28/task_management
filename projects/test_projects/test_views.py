@@ -146,11 +146,6 @@ class ProjectDetailViewTests(TestCase):
         username = self.user.username
         self.assertContains(self.response, username)
 
-    # def test_invite_form_presents(self):
-    #     form = InviteNewMemberForm(data={"projects": self.user.pk})
-    #     form.is_valid()
-    #     self.assertEqual(form.cleaned_data, form.data)
-
     def test_filter_form_presents(self):
         form = FilterByMembersForm(data={"member": self.new_user})
         form.is_valid()
@@ -158,15 +153,6 @@ class ProjectDetailViewTests(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, self.new_user.username)
         self.assertContains(response, "<form")
-
-    # def test_tasks_presents(self):
-    #     response = self.client.post(self.url)
-    #     form_data = {
-    #         "member":self.user.pk,
-    #     }
-    #     response = self.client.post(self.url, form_data)
-    #     self.assertEqual(response.status_code, 200)
-
 
 class TaskCreateViewTests(TestCase):
     def setUp(self):

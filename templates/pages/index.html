@@ -1,7 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-
 {% block content %}
 
   <div class="row">
@@ -79,46 +78,61 @@
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
           <h6 class="mb-4">Recent activity</h6>
-
         </li>
       </ul>
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade active show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Project</th>
-          <th>User</th>
-          <th>Activity</th>
-          <th>When</th>
-          <th class="text-right"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for log in logs %}
-          <tr>
-            <td>
-              <h6 class="m-0">
-                <a href="{% url "projects:project_detail" log.project.pk %}">{{ log.project.name }}</a>
-              </h6>
-            </td>
-            <td>
-              <h6 class="m-0">{{ log.user.username }}</h6>
-            </td>
-            <td>
-              <h6 class="m-0">{{ log.action }}</h6>
-            </td>
-            <td>
-              <h6 class="m-0 text-c-red">{{ log.timestamp|date:'d-M H:i' }}</h6>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
-    </div>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade active show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>User</th>
+                <th>Activity</th>
+                <th>When</th>
+                <th class="text-right"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in logs %}
+                <tr>
+                  <td>
+                    <h6 class="m-0">
+                      <a href="{% url "projects:project_detail" log.project.pk %}">{{ log.project.name }}</a>
+                    </h6>
+                  </td>
+                  <td>
+                    <h6 class="m-0">{{ log.user.username }}</h6>
+                  </td>
+                  <td>
+                    <h6 class="m-0">{{ log.action }}</h6>
+                  </td>
+                  <td>
+                    <h6 class="m-0 text-c-red">{{ log.timestamp|date:'d-M H:i' }}</h6>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="pagination">
+            <span class="step-links">
+              {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+              {% endif %}
 
+              <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+
+              {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 {% endblock content %}
