@@ -25,7 +25,9 @@ class IndexView(LoginRequiredMixin, TemplateView):
     def get_user_tasks(self):
         return Task.objects.filter(
             assigned_to=self.request.user,
-            is_done=False).select_related('assigned_to', 'task_type', 'projects')
+            is_done=False).select_related('assigned_to',
+                                          'task_type',
+                                          'projects')
 
     def get_expired_tasks(self):
         tasks = self.get_user_tasks()
@@ -54,7 +56,8 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
     def get_logs(self):
         projects = self.request.user.projects.prefetch_related('tasks').all()
-        all_logs = Log.objects.filter(project__in=projects).select_related('user', 'project')
+        all_logs = (Log.objects.filter(project__in=projects).
+                    select_related('user', 'project'))
         paginator = Paginator(all_logs, 10)
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)

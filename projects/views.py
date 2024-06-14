@@ -47,7 +47,8 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
-        context["members"] = User.objects.filter(projects=self.object).select_related("projects")
+        context["members"] = User.objects.filter(
+            projects=self.object).select_related("projects")
         context["InviteNewMemberForm"] = InviteNewMemberForm(
             project=self.object
         )
@@ -58,7 +59,8 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         return context
 
     def get_tasks_by_member(self):
-        tasks = Task.objects.filter(projects=self.object).select_related("assigned_to", "task_type", "projects")
+        tasks = (Task.objects.filter(projects=self.object).
+                 select_related("assigned_to", "task_type", "projects"))
         if self.request.method == "GET":
             form = FilterByMembersForm(self.request.GET, project=self.object)
             if form.is_valid():

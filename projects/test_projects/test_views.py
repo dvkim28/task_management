@@ -154,6 +154,7 @@ class ProjectDetailViewTests(TestCase):
         self.assertContains(response, self.new_user.username)
         self.assertContains(response, "<form")
 
+
 class TaskCreateViewTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
