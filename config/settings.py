@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', default='x%*!n4*yzwdvck+#5%fzk!p84zkz=fyk5oey#abxy$zas!wv0u')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", " ") != "False"
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0", "task-management-16r3.onrender.com"]
 
