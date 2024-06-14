@@ -199,10 +199,10 @@
         color: white;
     }
     .table-custom-bg thead {
-      background-color: rgba(76, 92, 123, 0.6);
-      color: white;
+      background-color: rgba(76, 92, 123, 0.6); /* темный фон для заголовка */
+      color: white; /* белый цвет текста для заголовка */
     }
     .table-hover tbody tr:hover {
-      background-color: rgba(102, 108, 121, 0.28);
+      background-color: rgba(102, 108, 121, 0.28); /* фон строки при наведении курсора */
       color: white;
     }
