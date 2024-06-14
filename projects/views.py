@@ -31,9 +31,9 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
             form.instance.managements.add(manager)
             manager.projects.add(form.instance)
             project_pk = form.instance.pk
-            return HttpResponseRedirect(
-                reverse_lazy("projects:project_detail",
-                             kwargs={"pk": project_pk}))
+        return HttpResponseRedirect(
+            reverse_lazy("projects:project_detail",
+                         kwargs={"pk": project_pk}))
 
     def get_success_url(self):
         return reverse_lazy("projects:project_detail", kwargs={
@@ -49,9 +49,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context["members"] = User.objects.filter(
             projects=self.object).select_related("projects")
-        context["InviteNewMemberForm"] = InviteNewMemberForm(
-            project=self.object
-        )
         context["filter_form"] = FilterByMembersForm(
             self.request.GET,
             project=self.object)
@@ -196,59 +193,91 @@ class TasksListView(LoginRequiredMixin, ListView):
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     model = Project
     template_name = "pages/project-admin.html"
-    # fields = ["name", "description",]
     form_class = GeneralInfoForm
 
     def post(self, request, *args, **kwargs):
-        project = self.get_object()
+        self.object = self.get_object()
         form = self.get_form()
+
         if form.is_valid():
-            pass
+            self.update_project(form)
+
+        self.handle_member_form(request)
+        self.handle_management_form(request)
+        self.handle_management_invitation_form(request)
+        self.handle_invite_new_member_form(request)
+
+        return HttpResponseRedirect(
+            reverse_lazy("projects:project_detail", kwargs={"pk": self.object.pk})
+        )
+
+    def update_project(self, form):
+        project = self.object
         if form.data.get("name"):
-            project.name = form.data.get('name')
+            project.name = form.data.get("name")
         if form.data.get("description"):
-            project.description = form.data.get('description')
+            project.description = form.data.get("description")
         project.save()
-        member_form = ProjectMemberForm(request.POST, project=project)
+
+    def handle_member_form(self, request):
+        member_form = ProjectMemberForm(request.POST, project=self.object)
         if member_form.is_valid():
             for member in member_form.cleaned_data['projects']:
-                try:
-                    user = User.objects.get(pk=member.id)
-                    user.projects.remove(project)
-                    user.save()
-                except User.DoesNotExist:
-                    pass
+                self.remove_member(member)
 
-        management_form = ProjectManagementForm(request.POST, project=project)
+    def handle_management_form(self, request):
+        management_form = ProjectManagementForm(request.POST, project=self.object)
         if management_form.is_valid():
             for member in management_form.cleaned_data['projects']:
-                try:
-                    user = User.objects.get(pk=member.id)
-                    project.managements.remove(user)
-                    project.save()
-                except User.DoesNotExist:
-                    pass
+                self.remove_management(member)
 
-        management_invitation_form = ProjectManagementInvitationForm(
-            request.POST, project=project
-        )
+    def handle_management_invitation_form(self, request):
+        management_invitation_form = ProjectManagementInvitationForm(request.POST, project=self.object)
         if management_invitation_form.is_valid():
             for member in management_invitation_form.cleaned_data['member']:
-                try:
-                    user = User.objects.get(pk=member.id)
-                    project.managements.add(user)
-                except User.DoesNotExist:
-                    pass
-        return HttpResponseRedirect(
-            reverse_lazy(
-                "projects:project_detail", kwargs={"pk": project.pk})
-        )
+                self.add_management(member)
+
+    def handle_invite_new_member_form(self, request):
+        form = InviteNewMemberForm(request.POST)
+        if form.is_valid():
+            users = form.cleaned_data['projects']
+            for user in users:
+                self.add_member(user)
+
+    def remove_member(self, member):
+        try:
+            user = User.objects.get(pk=member.id)
+            user.projects.remove(self.object)
+            user.save()
+        except User.DoesNotExist:
+            pass
+
+    def remove_management(self, member):
+        try:
+            user = User.objects.get(pk=member.id)
+            self.object.managements.remove(user)
+            self.object.save()
+        except User.DoesNotExist:
+            pass
+
+    def add_management(self, member):
+        try:
+            user = User.objects.get(pk=member.id)
+            self.object.managements.add(user)
+        except User.DoesNotExist:
+            pass
+
+    def add_member(self, user):
+        try:
+            user_obj = User.objects.get(pk=user.pk)
+            user_obj.projects.add(self.object)
+        except User.DoesNotExist:
+            pass
 
     def get_context_data(self, **kwargs):
         context = super(ProjectUpdateView, self).get_context_data(**kwargs)
         context["MemberForm"] = ProjectMemberForm(project=self.object)
         context["ManagementForm"] = ProjectManagementForm(project=self.object)
-        context["management_invitation_form"] = (
-            ProjectManagementInvitationForm(project=self.object)
-        )
+        context["management_invitation_form"] = ProjectManagementInvitationForm(project=self.object)
+        context["InviteNewMemberForm"] = InviteNewMemberForm(project=self.object)
         return context

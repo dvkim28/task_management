@@ -65,6 +65,11 @@
             </form>
 
           </div>
+           <form action="" method="post" novalidate>
+              {{ InviteNewMemberForm|crispy }}
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-info">Invite new member</button>
+            </form>
 
         </div>
       </div>
