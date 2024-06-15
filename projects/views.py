@@ -64,7 +64,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
                 member = form.cleaned_data["member"]
                 if member is not None:
                     filtered_tasks = tasks.filter(assigned_to=member)
-                    print(filtered_tasks)
                     return filtered_tasks
         return tasks
 
