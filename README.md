@@ -1,7 +1,9 @@
 # Django Project
-
 This is a Django project designed to manage team. Below, you'll find information on how to set up and run the project, as well as some additional resources.
-
+Site: https://task-management-16r3.onrender.com/
+Test user: 
+login: TestUser
+password: 0000
 ## Table of Contents
 
 - [Requirements](#requirements)
